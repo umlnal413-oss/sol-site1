@@ -1,0 +1,800 @@
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>SOL — Digital Assets</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: #030305;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* AMBIENT */
+
+    .ambient {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      filter: blur(110px);
+      opacity: .22;
+      animation: float 10s ease-in-out infinite alternate;
+    }
+
+    .orb.one {
+      background: #9945ff;
+      top: -220px;
+      left: -180px;
+    }
+
+    .orb.two {
+      background: #14f195;
+      right: -220px;
+      top: 25%;
+      animation-delay: -3s;
+    }
+
+    .orb.three {
+      background: #9945ff;
+      bottom: -300px;
+      left: 35%;
+      animation-delay: -6s;
+    }
+
+    @keyframes float {
+      from {
+        transform: translate(0, 0) scale(1);
+      }
+
+      to {
+        transform: translate(40px, 30px) scale(1.15);
+      }
+    }
+
+    /* SNOW */
+
+    .snow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .flake {
+      position: absolute;
+      top: -20px;
+      color: rgba(255,255,255,.7);
+      font-size: 10px;
+      animation: snowfall linear infinite;
+    }
+
+    @keyframes snowfall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+      }
+    }
+
+    /* CONTENT */
+
+    .page {
+      position: relative;
+      z-index: 2;
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      margin: auto;
+    }
+
+    /* HEADER */
+
+    header {
+      height: 90px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      background: linear-gradient(90deg, #9945ff, #14f195);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .network {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #888;
+      font-size: 12px;
+    }
+
+    .network-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #14f195;
+      box-shadow: 0 0 15px #14f195;
+    }
+
+    /* HERO */
+
+    .hero {
+      padding: 105px 0 90px;
+      max-width: 850px;
+    }
+
+    .badge {
+      display: inline-flex;
+      border: 1px solid rgba(153,69,255,.35);
+      background: rgba(153,69,255,.08);
+      border-radius: 100px;
+      padding: 9px 15px;
+      color: #bbb;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      margin-bottom: 25px;
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      font-size: clamp(60px, 11vw, 125px);
+      line-height: .83;
+      letter-spacing: -8px;
+      margin-bottom: 35px;
+    }
+
+    h1 span {
+      background: linear-gradient(
+        100deg,
+        #ffffff 0%,
+        #9945ff 45%,
+        #14f195 100%
+      );
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-text {
+      max-width: 620px;
+      color: #999;
+      font-size: 17px;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .main-button {
+      display: inline-block;
+      border: 0;
+      border-radius: 12px;
+      padding: 17px 30px;
+      background: linear-gradient(100deg, #9945ff, #14f195);
+      color: #050505;
+      font-size: 15px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 0 35px rgba(153,69,255,.2);
+      transition: .25s;
+    }
+
+    .main-button:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0 10px 45px rgba(153,69,255,.25),
+        0 0 30px rgba(20,241,149,.15);
+    }
+
+    /* PROMO */
+
+    .promo {
+      border: 1px solid rgba(20,241,149,.18);
+      background: rgba(20,241,149,.035);
+      border-radius: 18px;
+      padding: 20px 24px;
+      margin-bottom: 55px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .promo-icon {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      background: rgba(20,241,149,.1);
+      color: #14f195;
+      font-weight: 900;
+    }
+
+    .promo strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .promo p {
+      color: #777;
+      font-size: 13px;
+    }
+
+    /* SECTION */
+
+    .section-title {
+      color: #555;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    /* CARDS */
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 80px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      padding: 30px;
+      border-radius: 20px;
+      border: 1px solid #222;
+      background: rgba(10,10,13,.8);
+      backdrop-filter: blur(15px);
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      background: #9945ff;
+      filter: blur(80px);
+      opacity: .12;
+      right: -50px;
+      bottom: -50px;
+    }
+
+    .card small {
+      color: #555;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .amount {
+      margin: 12px 0 8px;
+      font-size: 38px;
+      font-weight: 800;
+    }
+
+    .result {
+      color: #999;
+      font-size: 14px;
+    }
+
+    /* WALLET */
+
+    .wallet-section {
+      margin-bottom: 80px;
+    }
+
+    .wallet-box {
+      padding: 30px;
+      border-radius: 22px;
+      border: 1px solid #292929;
+      background: rgba(8,8,11,.85);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 80px rgba(0,0,0,.3);
+    }
+
+    .wallet-label {
+      color: #555;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    .wallet-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .wallet {
+      flex: 1;
+      padding: 16px;
+      border: 1px solid #222;
+      border-radius: 11px;
+      background: #030305;
+      color: #ccc;
+      font-family: monospace;
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    .copy-button {
+      border: 0;
+      border-radius: 11px;
+      padding: 0 22px;
+      background: #fff;
+      color: #000;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .copy-button:hover {
+      background: #14f195;
+    }
+
+    #copyStatus {
+      color: #14f195;
+      font-size: 12px;
+      margin-top: 12px;
+      min-height: 15px;
+    }
+
+    /* STEPS */
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-bottom: 80px;
+    }
+
+    .step {
+      border-top: 1px solid #222;
+      padding-top: 20px;
+    }
+
+    .step-number {
+      color: #9945ff;
+      font-size: 12px;
+      margin-bottom: 20px;
+    }
+
+    .step h3 {
+      font-size: 19px;
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      color: #777;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* CTA */
+
+    .cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+      padding: 45px 0;
+      border-top: 1px solid #222;
+      border-bottom: 1px solid #222;
+      margin-bottom: 35px;
+    }
+
+    .cta h2 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .cta p {
+      color: #666;
+      font-size: 13px;
+    }
+
+    /* FOOTER */
+
+    footer {
+      padding-bottom: 50px;
+      color: #444;
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 700px) {
+
+      .hero {
+        padding: 70px 0;
+      }
+
+      h1 {
+        letter-spacing: -4px;
+      }
+
+      .cards,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .wallet-row {
+        flex-direction: column;
+      }
+
+      .copy-button {
+        padding: 16px;
+      }
+
+      .cta,
+      .promo {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="ambient">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
+  </div>
+
+  <div class="snow" id="snow"></div>
+
+  <div class="page">
+    <div class="container">
+
+      <!-- HEADER -->
+
+      <header>
+        <div class="logo">SOL<span>.</span></div>
+
+        <div class="network">
+          <span class="network-dot"></span>
+          Solana Network
+        </div>
+      </header>
+
+
+      <!-- HERO -->
+
+      <section class="hero">
+
+        <div class="badge">
+          DIGITAL ASSETS · SOLANA
+        </div>
+
+        <h1>
+          START<br>
+          <span>WITH SOL.</span>
+        </h1>
+
+        <p class="hero-text">
+          Start with a minimum amount of $100.
+          The examples below illustrate potential
+          results based on a projected return.
+        </p>
+
+        <a href="#wallet" class="main-button">
+          Get Started
+        </a>
+
+      </section>
+
+
+      <!-- PROMO -->
+
+      <section class="promo">
+
+        <div class="promo-icon">✦</div>
+
+        <div>
+          <strong>Special Offer</strong>
+
+          <p>
+            Offer terms may change. Please review the
+            current terms before participating.
+          </p>
+        </div>
+
+      </section>
+
+
+      <!-- CALCULATIONS -->
+
+      <div class="section-title">
+        Example Calculations
+      </div>
+
+      <section class="cards">
+
+        <div class="card">
+          <small>Start</small>
+
+          <div class="amount">
+            $100
+          </div>
+
+          <div class="result">
+            Potentially up to $150
+          </div>
+        </div>
+
+
+        <div class="card">
+          <small>Popular</small>
+
+          <div class="amount">
+            $500
+          </div>
+
+          <div class="result">
+            Potentially up to $750
+          </div>
+        </div>
+
+
+        <div class="card">
+          <small>Pro</small>
+
+          <div class="amount">
+            $1,000
+          </div>
+
+          <div class="result">
+            Potentially up to $1,500
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- WALLET -->
+
+      <section class="wallet-section" id="wallet">
+
+        <div class="section-title">
+          SOL Wallet
+        </div>
+
+        <div class="wallet-box">
+
+          <div class="wallet-label">
+            SOL Deposit Address
+          </div>
+
+          <div class="wallet-row">
+
+            <div class="wallet" id="walletAddress">
+              9c3VK9k1sSxXTw8zH7g8PN3dc4maD9oZxDUVaNknLDYG
+            </div>
+
+            <button
+              class="copy-button"
+              onclick="copyWallet()"
+            >
+              Copy Address
+            </button>
+
+          </div>
+
+          <div id="copyStatus"></div>
+
+        </div>
+
+      </section>
+
+
+      <!-- HOW IT WORKS -->
+
+      <div class="section-title">
+        How It Works
+      </div>
+
+      <section class="steps">
+
+        <div class="step">
+
+          <div class="step-number">
+            01
+          </div>
+
+          <h3>
+            Choose Your Amount
+          </h3>
+
+          <p>
+            The minimum amount is $100.
+          </p>
+
+        </div>
+
+
+        <div class="step">
+
+          <div class="step-number">
+            02
+          </div>
+
+          <h3>
+            Verify the Address
+          </h3>
+
+          <p>
+            Carefully verify the wallet address
+            before sending any funds.
+          </p>
+
+        </div>
+
+
+        <div class="step">
+
+          <div class="step-number">
+            03
+          </div>
+
+          <h3>
+            Get Started
+          </h3>
+
+          <p>
+            Use the copy button to quickly copy
+            the SOL address.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- CTA -->
+
+      <section class="cta">
+
+        <div>
+
+          <h2>
+            Ready to Start?
+          </h2>
+
+          <p>
+            Minimum amount — $100
+          </p>
+
+        </div>
+
+        <a
+          href="#wallet"
+          class="main-button"
+        >
+          Get Started
+        </a>
+
+      </section>
+
+
+      <!-- FOOTER -->
+
+      <footer>
+
+        Digital assets involve risk. The amounts shown
+        are illustrative calculations and do not guarantee
+        a profit. Carefully verify the wallet address
+        before sending any funds.
+
+      </footer>
+
+    </div>
+  </div>
+
+
+  <script>
+
+    /* COPY WALLET */
+
+    function copyWallet() {
+
+      const address =
+        document
+          .getElementById("walletAddress")
+          .innerText
+          .trim();
+
+      const status =
+        document.getElementById("copyStatus");
+
+      navigator.clipboard.writeText(address)
+        .then(() => {
+
+          status.innerText =
+            "✓ Address copied";
+
+        })
+        .catch(() => {
+
+          status.innerText =
+            "Unable to copy. Please copy the address manually.";
+
+        });
+    }
+
+
+    /* SNOW */
+
+    const snow =
+      document.getElementById("snow");
+
+    for (let i = 0; i < 45; i++) {
+
+      const flake =
+        document.createElement("div");
+
+      flake.className = "flake";
+
+      flake.innerHTML = "•";
+
+      flake.style.left =
+        Math.random() * 100 + "%";
+
+      flake.style.opacity =
+        Math.random() * .6 + .15;
+
+      flake.style.fontSize =
+        (Math.random() * 8 + 5) + "px";
+
+      flake.style.animationDuration =
+        (Math.random() * 8 + 7) + "s";
+
+      flake.style.animationDelay =
+        "-" + (Math.random() * 12) + "s";
+
+      snow.appendChild(flake);
+    }
+
+  </script>
+
+</body>
+</html>
+```
+
+
